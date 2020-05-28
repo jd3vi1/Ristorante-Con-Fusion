@@ -16,7 +16,7 @@ class App extends Component{
 
     return (
       <div className="App">
-			<Navbar dark color="danger">
+			<Navbar dark color="primary">
 				<div className="container">
 					<NavbarBrand href="/"> Ristorante Con Fusion</NavbarBrand>
 				</div>
