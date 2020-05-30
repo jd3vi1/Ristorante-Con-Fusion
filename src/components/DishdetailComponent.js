@@ -29,18 +29,19 @@ class Dishdetail extends Component {
 
 	renderComments(comments) {
 		if (comments != null) {
-            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+			const options = { month: "long", day: "numeric", year: "numeric" };
 			return (
 				<div>
 					<h4>Comments</h4>
 					<ul className="list-unstyled">
 						{comments.map((comment) => {
-                            let date = new Date(comment.date);
+							let date = new Date(comment.date);
 							return (
 								<li key={comment.id}>
 									<p>{comment.comment}</p>
 									<p>
-										-- {comment.author}, {date.toLocaleDateString('en-IN', options)}
+										-- {comment.author},{" "}
+										{date.toLocaleDateString("en-IN", options)}
 									</p>
 								</li>
 							);
@@ -52,12 +53,14 @@ class Dishdetail extends Component {
 	}
 	render() {
 		return (
-			<div className="row">
-				<div className="col-12 col-md-5 m-1">
-					{this.renderDish(this.props.dish)}
-				</div>
-				<div className="col-12 col-md-5 m-1">
-					{this.props.dish && this.renderComments(this.props.dish.comments)}
+			<div className="container">
+				<div className="row">
+					<div className="col-12 col-md-5 m-1">
+						{this.renderDish(this.props.dish)}
+					</div>
+					<div className="col-12 col-md-5 m-1">
+						{this.props.dish && this.renderComments(this.props.dish.comments)}
+					</div>
 				</div>
 			</div>
 		);
