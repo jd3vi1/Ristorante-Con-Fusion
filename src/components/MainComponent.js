@@ -67,7 +67,7 @@ class Main extends Component {
 					<Route
 						exact
 						path="/aboutus"
-						component={() => <About leaders={LEADERS} />}
+						component={() => <About leaders={this.state.leaders} />}
 					/>
 					<Redirect to="/home" />
 				</Switch>
