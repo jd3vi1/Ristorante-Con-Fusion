@@ -15,6 +15,8 @@ import {
 	Col,
 	Label,
 } from "reactstrap";
+import "font-awesome/css/font-awesome.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 
@@ -26,20 +28,17 @@ class CommentForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isModalOpen: false,
+			modalOpen: false,
 		};
-		this.handleToggle = this.handleToggle.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleToggle() {
+	handleToggle = () => {
 		this.setState({
-			isModalOpen: !this.state.isModalOpen,
+			modalOpen: !this.state.modalOpen,
 		});
-	}
+	};
 
-	handleSubmit(values) {
-		alert("Current State is: " + JSON.stringify(values));
+	submitHandle = (values) => {
 		this.handleToggle();
 		this.props.addComment(
 			this.props.dishId,
@@ -47,21 +46,17 @@ class CommentForm extends Component {
 			values.author,
 			values.comment
 		);
-	}
-
+	};
 	render() {
 		return (
 			<React.Fragment>
-				<Button outline onClick={this.handleToggle}>
+				<Button className="bg-white text-dark" onClick={this.handleToggle}>
 					<i className="fa fa-pencil fa-lg"></i> Submit Comment
 				</Button>
-				<Modal
-					isOpen={this.state.isModalOpen}
-					toggle={(values) => this.handleToggle(values)}
-				>
+				<Modal isOpen={this.state.modalOpen} toggle={this.handleToggle}>
 					<ModalHeader toggle={this.handleToggle}>Submit Comment</ModalHeader>
 					<ModalBody>
-						<LocalForm onSubmit={(value) => this.handleSubmit(value)}>
+						<LocalForm onSubmit={(value) => this.submitHandle(value)}>
 							<Row className="form-group">
 								<Label htmlFor="rating" md={4}>
 									Rating
@@ -156,6 +151,38 @@ const Dishdetail = ({ dish, comments, addComment }) => {
 	);
 };
 
+function formatDate(date) {
+	const option = { year: "numeric", month: "short", day: "numeric" };
+	const date1 = new Date(date);
+	const newdate = date1.toLocaleDateString("en-US", option);
+	return newdate;
+}
+
+const RenderComments = ({ comments, addComment, dishId }) => {
+	if (comments != null) {
+		const com = comments.map((co) => {
+			return (
+				<React.Fragment>
+					<li>{co.comment}</li>
+					<br />
+					<li>
+						-- {co.author}, {formatDate(co.date)}
+					</li>
+					<br />
+				</React.Fragment>
+			);
+		});
+		return (
+			<ul className="list-unstyled">
+				{com}
+				<CommentForm dishId={dishId} addComment={addComment} />
+			</ul>
+		);
+	} else {
+		return <div></div>;
+	}
+};
+
 const RenderDish = ({ dish, comments, addComment }) => {
 	if (dish != null) {
 		return (
@@ -199,37 +226,5 @@ const RenderDish = ({ dish, comments, addComment }) => {
 		return <div></div>;
 	}
 };
-
-const RenderComments = ({ comments, addComment, dishId }) => {
-	if (comments != null) {
-		const com = comments.map((co) => {
-			return (
-				<React.Fragment>
-					<li>{co.comment}</li>
-					<br />
-					<li>
-						-- {co.author}, {formatDate(co.date)}
-					</li>
-					<br />
-				</React.Fragment>
-			);
-		});
-		return (
-			<ul className="list-unstyled">
-				{com}
-				<CommentForm dishId={dishId} addComment={addComment} />
-			</ul>
-		);
-	} else {
-		return <div></div>;
-	}
-};
-
-function formatDate(date) {
-	const option = { year: "numeric", month: "short", day: "numeric" };
-	const date1 = new Date(date);
-	const newdate = date1.toLocaleDateString("en-US", option);
-	return newdate;
-}
 
 export default Dishdetail;
