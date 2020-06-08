@@ -11,7 +11,7 @@ export const addComment = (comment) => ({
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 	const newComment = {
 		dishId: dishId,
-		rating: rating,
+		rating: parseInt(rating),
 		author: author,
 		comment: comment,
 	};
