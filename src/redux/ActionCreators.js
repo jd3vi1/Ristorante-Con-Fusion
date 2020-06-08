@@ -1,5 +1,4 @@
 import * as ActionTypes from "./ActionTypes";
-import { useLocation } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 
 export const addComment = (comment) => ({
