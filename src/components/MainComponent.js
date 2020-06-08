@@ -13,6 +13,8 @@ import {
 	fetchDishes,
 	fetchComments,
 	fetchPromos,
+	fetchLeaders,
+	postFeedback,
 } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -41,6 +43,10 @@ const mapDispatchToProps = (dispatch) => ({
 	resetFeedbackForm: () => {
 		dispatch(actions.reset("feedback"));
 	},
+	fetchLeaders: () => {
+		dispatch(fetchLeaders());
+	},
+	postFeedback: (values) => postFeedback(values),
 });
 
 class Main extends Component {
@@ -52,6 +58,7 @@ class Main extends Component {
 		this.props.fetchDishes();
 		this.props.fetchComments();
 		this.props.fetchPromos();
+		this.props.fetchLeaders();
 	}
 
 	onDishSelect(dish) {
@@ -91,7 +98,11 @@ class Main extends Component {
 					}
 					promosLoading={this.props.promotions.isLoading}
 					promosErrMess={this.props.promotions.errMess}
-					leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+					leader={
+						this.props.leaders.leaders.filter((leader) => leader.featured)[0]
+					}
+					leadersLoading={this.props.leaders.isLoading}
+					leadersErrMess={this.props.leaders.errMess}
 				/>
 			);
 		};
@@ -116,14 +127,17 @@ class Main extends Component {
 								exact
 								path="/contactus"
 								component={() => (
-									<Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+									<Contact
+										resetFeedbackForm={this.props.resetFeedbackForm}
+										postFeedbackForm={this.props.postFeedback}
+									/>
 								)}
 							/>
 							} />
 							<Route
 								exact
 								path="/aboutus"
-								component={() => <About leaders={this.props.leaders} />}
+								component={() => <About leaders={this.props.leaders.leaders} />}
 							/>
 							<Redirect to="/home" />
 						</Switch>
