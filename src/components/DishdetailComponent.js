@@ -43,7 +43,7 @@ class CommentForm extends Component {
 	handleSubmit(values) {
 		alert("Current State is: " + JSON.stringify(values));
 		this.handleToggle();
-		this.props.addComment(
+		this.props.postComment(
 			this.props.dishId,
 			values.rating,
 			values.author,
@@ -150,7 +150,13 @@ class CommentForm extends Component {
 	}
 }
 
-const Dishdetail = ({ dish, comments, addComment, dishesLoading, errMess }) => {
+const Dishdetail = ({
+	dish,
+	comments,
+	postComment,
+	dishesLoading,
+	errMess,
+}) => {
 	if (dishesLoading) {
 		return (
 			<div className="container">
@@ -170,13 +176,13 @@ const Dishdetail = ({ dish, comments, addComment, dishesLoading, errMess }) => {
 	} else {
 		return (
 			<React.Fragment>
-				<RenderDish dish={dish} comments={comments} addComment={addComment} />
+				<RenderDish dish={dish} comments={comments} postComment={postComment} />
 			</React.Fragment>
 		);
 	}
 };
 
-const RenderDish = ({ dish, comments, addComment }) => {
+const RenderDish = ({ dish, comments, postComment }) => {
 	if (dish != null) {
 		return (
 			<div className="container">
@@ -212,7 +218,7 @@ const RenderDish = ({ dish, comments, addComment }) => {
 						<h4>Comments</h4>
 						<RenderComments
 							comments={comments}
-							addComment={addComment}
+							postComment={postComment}
 							dishId={dish.id}
 						/>
 					</div>
@@ -224,7 +230,7 @@ const RenderDish = ({ dish, comments, addComment }) => {
 	}
 };
 
-const RenderComments = ({ comments, addComment, dishId }) => {
+const RenderComments = ({ comments, postComment, dishId }) => {
 	if (comments != null) {
 		const com = comments.map((co) => {
 			return (
@@ -241,7 +247,7 @@ const RenderComments = ({ comments, addComment, dishId }) => {
 		return (
 			<ul className="list-unstyled">
 				{com}
-				<CommentForm dishId={dishId} addComment={addComment} />
+				<CommentForm dishId={dishId} postComment={postComment} />
 			</ul>
 		);
 	} else {
